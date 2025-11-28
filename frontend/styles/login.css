@@ -1,0 +1,150 @@
+/* MAIN LAYOUT */
+.login-body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #f3f4f6;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+/* CONTAINER */
+.auth-container {
+    width: 900px;
+    height: 520px;
+    background: #ffffff;
+    display: flex;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+}
+
+/* LEFT INFO SECTION */
+.auth-info {
+    flex: 1;
+    background: linear-gradient(135deg, #4f46e5, #6d28d9);
+    padding: 40px;
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.auth-info h1 {
+    font-size: 32px;
+    margin-bottom: 10px;
+}
+
+.auth-info p {
+    font-size: 15px;
+    opacity: 0.9;
+    margin-bottom: 20px;
+}
+
+.auth-logo {
+    width: 120px;
+    margin-top: 28px;
+}
+
+/* RIGHT BOX */
+.auth-box {
+    flex: 1;
+    padding: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* FORMS */
+.form {
+    width: 100%;
+    max-width: 300px;
+    display: none;
+}
+
+.form.active {
+    display: block;
+}
+
+.form h2 {
+    margin-bottom: 20px;
+    font-size: 24px;
+    color: #111827;
+}
+
+/* INPUT FIELDS */
+.input-group {
+    margin-bottom: 15px;
+}
+
+.input-group label {
+    display: block;
+    font-size: 14px;
+    color: #374151;
+    margin-bottom: 6px;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    font-size: 14px;
+    outline: none;
+}
+
+.input-group input:focus {
+    border-color: #4f46e5;
+    box-shadow: 0 0 0 1px rgba(79, 70, 229, 0.25);
+}
+
+/* BUTTON */
+.btn-primary {
+    width: 100%;
+    padding: 12px;
+    border: none;
+    background: #4f46e5;
+    color: white;
+    font-weight: 600;
+    border-radius: 8px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+.btn-primary:hover {
+    background: #4338ca;
+}
+
+/* SWITCH TEXT */
+.switch-text {
+    text-align: center;
+    margin-top: 15px;
+    font-size: 14px;
+}
+
+.switch-text a {
+    color: #4f46e5;
+    text-decoration: none;
+}
+
+.switch-text a:hover {
+    text-decoration: underline;
+}
+
+/* RESPONSIVE */
+@media (max-width: 780px) {
+    .auth-container {
+        flex-direction: column;
+        height: auto;
+        width: 95%;
+    }
+
+    .auth-info {
+        display: none;
+    }
+
+    .auth-box {
+        padding: 20px;
+    }
+}

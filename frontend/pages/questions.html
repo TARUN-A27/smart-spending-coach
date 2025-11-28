@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Onboarding | Smart Spending Coach</title>
+    <link rel="stylesheet" href="../styles/reset.css">
+    <link rel="stylesheet" href="../styles/login.css">
+    <style>
+        .question-container {
+            max-width: 650px;
+            margin: 50px auto;
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .question-block {
+            margin-bottom: 25px;
+        }
+
+        .question {
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .options label {
+            display: block;
+            margin: 6px 0;
+            cursor: pointer;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        input[type="number"] {
+            padding: 6px;
+            width: 200px;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+        }
+
+        .btn-primary {
+            margin-top: 0;
+        }
+
+        /* SLIDE EFFECT STYLES */
+        .slides-wrapper {
+            position: relative;
+            overflow: hidden;
+            min-height: 250px;
+        }
+
+        .slide {
+            display: none;
+            opacity: 0;
+        }
+
+        .slide.active {
+            display: block;
+            opacity: 1;
+        }
+
+        .slide-in-left {
+            animation: slideInLeft 0.4s ease forwards;
+        }
+
+        .slide-in-right {
+            animation: slideInRight 0.4s ease forwards;
+        }
+
+        @keyframes slideInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(40px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(-40px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .navigation-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 25px;
+            gap: 10px;
+        }
+
+        .btn-secondary {
+            flex: 1;
+            padding: 10px 16px;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+            background: #f5f5f5;
+            cursor: pointer;
+        }
+
+        .btn-primary {
+            flex: 1;
+            padding: 10px 16px;
+            border-radius: 8px;
+            border: none;
+            background: #4f46e5;
+            color: white;
+            cursor: pointer;
+        }
+
+        .btn-primary:disabled,
+        .btn-secondary:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+    </style>
+</head>
+
+<body class="login-body">
+
+    <div class="question-container">
+
+        <h2>Tell Us About Yourself</h2>
+
+        <form id="questionForm">
+            <div class="slides-wrapper">
+                <!-- SLIDE 1: Role + Income -->
+                <div class="slide active">
+                    <!-- Q1 -->
+                    <div class="question-block">
+                        <p class="question">1. Are you a student or an employee?</p>
+                        <div class="options">
+                            <label>
+                                <input type="radio" name="role" value="student" required> Student
+                            </label>
+                            <label>
+                                <input type="radio" name="role" value="employee"> Employee
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Student Options -->
+                    <div id="studentOptions" class="hidden">
+                        <p class="question">What is your source of income?</p>
+                        <div class="options">
+                            <label><input type="radio" name="student_income_type" value="paid"> Paid</label>
+                            <label><input type="radio" name="student_income_type" value="pocket_money"> Pocket
+                                Money</label>
+                        </div>
+
+                        <input type="number" id="studentAmount" placeholder="Enter monthly amount (₹)" class="hidden">
+                    </div>
+
+                    <!-- Employee Amount -->
+                    <div id="employeeSection" class="hidden">
+                        <p class="question">Your monthly salary:</p>
+                        <input type="number" id="employeeSalary" placeholder="Enter salary (₹)">
+                    </div>
+                </div>
+
+                <!-- SLIDE 2: Age -->
+                <div class="slide">
+                    <div class="question-block">
+                        <p class="question">2. What is your age?</p>
+                        <input type="number" name="age" min="10" max="80" required>
+                    </div>
+                </div>
+
+                <!-- SLIDE 3: Financial Goal -->
+                <div class="slide">
+                    <div class="question-block">
+                        <p class="question">3. What is your primary financial goal?</p>
+                        <div class="options">
+                            <label><input type="radio" name="goal" value="Save more money" required> Save more
+                                money</label>
+                            <label><input type="radio" name="goal" value="Reduce expenses"> Reduce expenses</label>
+                            <label><input type="radio" name="goal" value="Track spending"> Track where my money
+                                goes</label>
+                            <label><input type="radio" name="goal" value="Pay off debts"> Pay off debts</label>
+                            <label><input type="radio" name="goal" value="Grow wealth"> Grow long-term wealth</label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SLIDE 4: Expense Category -->
+                <div class="slide">
+                    <div class="question-block">
+                        <p class="question">4. Which spending category is your biggest expense?</p>
+                        <div class="options">
+                            <label><input type="radio" name="expense_category" value="Food" required> Food</label>
+                            <label><input type="radio" name="expense_category" value="Shopping"> Shopping</label>
+                            <label><input type="radio" name="expense_category" value="Travel"> Travel</label>
+                            <label><input type="radio" name="expense_category" value="Subscriptions">
+                                Subscriptions</label>
+                            <label><input type="radio" name="expense_category" value="Education"> Education</label>
+                            <label><input type="radio" name="expense_category" value="Bills"> Bills</label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SLIDE 5: Budgeting Discipline -->
+                <div class="slide">
+                    <div class="question-block">
+                        <p class="question">5. How disciplined are you with budgeting?</p>
+                        <div class="options">
+                            <label><input type="radio" name="budgeting" value="Very disciplined" required> Very
+                                disciplined</label>
+                            <label><input type="radio" name="budgeting" value="Sometimes"> Sometimes</label>
+                            <label><input type="radio" name="budgeting" value="Rarely"> Rarely</label>
+                            <label><input type="radio" name="budgeting" value="Never budgeted"> Never budgeted</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- NAV BUTTONS -->
+            <div class="navigation-buttons">
+                <button type="button" id="prevBtn" class="btn-secondary">Back</button>
+                <button type="button" id="nextBtn" class="btn-primary">Next</button>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        const API_BASE = "http://127.0.0.1:8000";
+
+        const roleRadios = document.querySelectorAll("input[name='role']");
+        const studentOptions = document.getElementById("studentOptions");
+        const studentAmount = document.getElementById("studentAmount");
+        const employeeSection = document.getElementById("employeeSection");
+        const employeeSalary = document.getElementById("employeeSalary");
+
+        const slides = document.querySelectorAll(".slide");
+        const prevBtn = document.getElementById("prevBtn");
+        const nextBtn = document.getElementById("nextBtn");
+        const questionForm = document.getElementById("questionForm");
+
+        let currentStep = 0;
+
+        function showStep(index, direction = "next") {
+            slides.forEach((slide, i) => {
+                slide.classList.remove("active", "slide-in-left", "slide-in-right");
+                slide.style.display = "none";
+                slide.style.opacity = 0;
+            });
+
+            const target = slides[index];
+            target.style.display = "block";
+            target.classList.add("active");
+
+            if (direction === "next") {
+                target.classList.add("slide-in-left");
+            } else {
+                target.classList.add("slide-in-right");
+            }
+
+            prevBtn.style.display = index === 0 ? "none" : "inline-block";
+            nextBtn.textContent = index === slides.length - 1 ? "Finish" : "Next";
+        }
+
+        showStep(currentStep);
+
+        prevBtn.addEventListener("click", () => {
+            if (currentStep > 0) {
+                currentStep--;
+                showStep(currentStep, "back");
+            }
+        });
+
+        nextBtn.addEventListener("click", () => {
+            if (currentStep === slides.length - 1) {
+                // Last step -> submit the form
+                questionForm.requestSubmit();
+            } else {
+                currentStep++;
+                showStep(currentStep, "next");
+            }
+        });
+
+        // Handle Role Selection
+        roleRadios.forEach(radio => {
+            radio.addEventListener("change", () => {
+                if (radio.value === "student") {
+                    studentOptions.classList.remove("hidden");
+                    employeeSection.classList.add("hidden");
+                } else {
+                    employeeSection.classList.remove("hidden");
+                    studentOptions.classList.add("hidden");
+                }
+            });
+        });
+
+        // Show student amount input
+        document.querySelectorAll("input[name='student_income_type']").forEach(option => {
+            option.addEventListener("change", () => {
+                studentAmount.classList.remove("hidden");
+            });
+        });
+
+        // Submit Form (unchanged logic, just moved to work with slides)
+        questionForm.addEventListener("submit", async function (e) {
+            e.preventDefault();
+
+            const formData = new FormData(this);
+
+            let income = null;
+            let incomeType = formData.get("role");
+
+            if (incomeType === "student") {
+                income = document.getElementById("studentAmount").value;
+            } else {
+                income = document.getElementById("employeeSalary").value;
+            }
+
+            const payload = {
+                role: formData.get("role"),
+                income: income,
+                age: formData.get("age"),
+                financial_goal: formData.get("goal"),
+                expense_category: formData.get("expense_category"),
+                budgeting: formData.get("budgeting")
+            };
+
+            const token = localStorage.getItem("access_token");
+
+            const res = await fetch(`${API_BASE}/user/profile`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${token}`
+                },
+                body: JSON.stringify(payload)
+            });
+
+            if (!res.ok) {
+                alert("Failed to save answers");
+                return;
+            }
+
+            window.location.href = "dashboard.html";
+        });
+    </script>
+
+</body>
+
+</html>

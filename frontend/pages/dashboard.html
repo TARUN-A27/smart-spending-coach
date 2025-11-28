@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Dashboard | Smart Spending Coach</title>
+
+    <!-- Load global reset -->
+    <link rel="stylesheet" href="/static/styles/reset.css">
+
+
+    <style>
+        body {
+            background: #f5f6fa;
+            font-family: "Poppins", sans-serif;
+            margin: 0;
+        }
+
+        /* DEBUG BANNER */
+        #debugBanner {
+            background: yellow;
+            padding: 12px;
+            text-align: center;
+            font-size: 18px;
+            font-weight: bold;
+            border-bottom: 2px solid #333;
+        }
+
+        .navbar {
+            background: #4f46e5;
+            color: white;
+            padding: 15px 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logout-btn {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 8px 14px;
+            border-radius: 8px;
+            color: white;
+            cursor: pointer;
+            border: none;
+        }
+
+        .container {
+            max-width: 950px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+
+        .card {
+            background: white;
+            padding: 20px;
+            margin-bottom: 22px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        }
+
+        .stat-box {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .stat {
+            flex: 1 1 260px;
+            background: #eef0ff;
+            padding: 20px;
+            text-align: center;
+            border-radius: 10px;
+        }
+
+        .stat span {
+            display: block;
+            margin-top: 10px;
+            font-size: 22px;
+            font-weight: bold;
+        }
+
+        .error {
+            color: #b91c1c;
+            font-weight: 600;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- DEBUG BANNER: This tells us the correct file is loading -->
+    <div id="debugBanner">DEBUG: dashboard.html is loading</div>
+
+    <div class="navbar">
+        <h2>Smart Spending Coach</h2>
+        <button class="logout-btn" id="logoutBtn">Logout</button>
+    </div>
+
+    <div class="container">
+
+        <div class="card">
+            <h2>Your Dashboard</h2>
+            <p id="statusText">Loading your financial profile...</p>
+        </div>
+
+        <div class="card">
+            <h3>Welcome back, <span id="userName">User</span> 👋</h3>
+            <p>Your personalized insights are below.</p>
+        </div>
+
+        <div class="card">
+            <h3>Your Financial Summary</h3>
+
+            <div class="stat-box">
+                <div class="stat">
+                    Monthly Income
+                    <span id="incomeStat">₹0</span>
+                </div>
+
+                <div class="stat">
+                    Top Expense Category
+                    <span id="expenseStat">-</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h3>Smart Recommendation</h3>
+            <p id="recommendation">Generating insights...</p>
+        </div>
+    </div>
+
+    <script>
+        const API_BASE = "http://127.0.0.1:8000";
+        const token = localStorage.getItem("access_token");
+
+        const nameEl = document.getElementById("userName");
+        const incomeEl = document.getElementById("incomeStat");
+        const expenseEl = document.getElementById("expenseStat");
+        const recEl = document.getElementById("recommendation");
+        const statusEl = document.getElementById("statusText");
+
+        // If token is missing, redirect
+        if (!token) {
+            statusEl.textContent = "No login session found. Redirecting...";
+            statusEl.classList.add("error");
+            setTimeout(() => window.location.href = "/login.html", 900);
+        } else {
+            loadData();
+        }
+
+        async function loadData() {
+            try {
+                const res = await fetch(`${API_BASE}/user/profile/details`, {
+                    headers: { "Authorization": `Bearer ${token}` }
+                });
+
+                if (!res.ok) {
+                    statusEl.textContent = `Error: ${res.status} — unable to load profile.`;
+                    statusEl.classList.add("error");
+                    console.log(await res.text());
+                    return;
+                }
+
+                const data = await res.json();
+                console.log("Profile:", data);
+
+                statusEl.textContent = "Profile loaded successfully.";
+
+                nameEl.textContent = data.name;
+                incomeEl.textContent = `₹${data.income}`;
+                expenseEl.textContent = data.expense_category;
+
+                recEl.textContent = generateRecommendation(data);
+
+            } catch (e) {
+                console.error("Dashboard error:", e);
+                statusEl.textContent = "Failed to load data — check console.";
+                statusEl.classList.add("error");
+            }
+        }
+
+        function generateRecommendation(d) {
+            switch (d.expense_category) {
+                case "Food":
+                    return "Try reducing eating-out by 20% to improve savings.";
+                case "Shopping":
+                    return "Set a monthly shopping budget and review impulse purchases.";
+                case "Travel":
+                    return "Use public transport more to reduce monthly travel spending.";
+                case "Subscriptions":
+                    return "Cancel unused subscriptions to save recurring costs.";
+                default:
+                    return "Your spending looks generally stable. Keep tracking consistently.";
+            }
+        }
+
+        document.getElementById("logoutBtn").onclick = () => {
+            localStorage.removeItem("access_token");
+            window.location.href = "/login.html";
+        };
+    </script>
+
+</body>
+
+</html>
